@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using OnlineStore.Interfaces;
 
 namespace OnlineStore
@@ -11,20 +10,20 @@ namespace OnlineStore
         public Cart(IWarehouseRemovable warehouse) =>
             _warehouse = warehouse ?? throw new ArgumentNullException(nameof(warehouse));
 
-        public void Add(Good good, int count)
+        public Order CreateOrder()
         {
-            if (_warehouse.IsContains(good, count) == false)
-                throw new InvalidOperationException();
-
-            AddGood(good, count);
-        }
-
-        public Order Order()
-        {
-            _warehouse.RemoveGoods(Goods);
+            _warehouse.RemoveAmount(Products);
             Clear();
 
-            return new Order();
+            return new Order("просто какая - нибудь случайная строка.");
+        }
+
+        protected override void OnAdd(Product good, int count)
+        {
+            Products.TryGetValue(good, out int currentCount);
+
+            if (_warehouse.Contains(good, currentCount + count) == false)
+                throw new InvalidOperationException();
         }
     }
 }

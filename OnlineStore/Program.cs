@@ -6,25 +6,26 @@ namespace OnlineStore
     {
         private static void Main()
         {
-            Good iPhone12 = new Good("IPhone 12");
-            Good iPhone11 = new Good("IPhone 11");
+            Product iPhone12 = new Product("IPhone 12");
+            Product iPhone11 = new Product("IPhone 11");
 
             Warehouse warehouse = new Warehouse();
 
             Shop shop = new Shop(warehouse);
 
-            warehouse.Delive(iPhone12, 10);
-            warehouse.Delive(iPhone11, 1);
+            warehouse.Add(iPhone12, 10);
+            warehouse.Add(iPhone11, 1);
 
             //Вывод всех товаров на складе с их остатком
 
-            Cart cart = shop.Cart();
+            Cart cart = shop.CreateCart();
+
             cart.Add(iPhone12, 4);
             cart.Add(iPhone11, 3); //при такой ситуации возникает ошибка так, как нет нужного количества товара на складе
 
             //Вывод всех товаров в корзине
 
-            Console.WriteLine(cart.Order().Paylink);
+            Console.WriteLine(cart.CreateOrder().Paylink);
 
             cart.Add(iPhone12, 9); //Ошибка, после заказа со склада убираются заказанные товары
         }

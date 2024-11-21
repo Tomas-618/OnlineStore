@@ -2,9 +2,5 @@
 
 namespace OnlineStore
 {
-    public class Warehouse : BaseStorage, IWarehouseRemovable
-    {
-        public void Delive(Good good, int count) =>
-            AddGood(good, count);
-    }
+    public class Warehouse : BaseStorage, IWarehouseRemovable { }
 }

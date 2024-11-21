@@ -5,52 +5,61 @@ namespace OnlineStore
 {
     public abstract class BaseStorage
     {
-        private readonly Dictionary<Good, int> _goods;
+        private readonly Dictionary<Product, int> _products;
 
         protected BaseStorage() =>
-            _goods = new Dictionary<Good, int>();
+            _products = new Dictionary<Product, int>();
 
-        protected IReadOnlyDictionary<Good, int> Goods => _goods;
+        protected IReadOnlyDictionary<Product, int> Products => _products;
 
-        public void RemoveGoods(IReadOnlyDictionary<Good, int> goods)
-        {
-            if (goods == null)
-                throw new ArgumentNullException(nameof(goods));
-
-            foreach (KeyValuePair<Good, int> pair in goods)
-            {
-                if (IsContains(pair.Key, pair.Value) == false)
-                {
-                    throw new InvalidOperationException();
-                }
-
-                _goods[pair.Key] -= pair.Value;
-            }
-        }
-
-        public bool IsContains(Good good, int count)
+        public void Add(Product good, int count)
         {
             if (count <= 0)
                 throw new ArgumentOutOfRangeException(count.ToString());
 
-            if (Goods.ContainsKey(good))
-                return Goods[good] >= count;
+            OnAdd(good, count);
+
+            if (_products.ContainsKey(good))
+                _products[good] += count;
+            else
+                _products.Add(good, count);
+        }
+
+        public void RemoveAmount(IReadOnlyDictionary<Product, int> goods)
+        {
+            if (goods == null)
+                throw new ArgumentNullException(nameof(goods));
+
+            foreach (KeyValuePair<Product, int> pair in goods)
+            {
+                if (Contains(pair.Key, pair.Value) == false)
+                {
+                    throw new InvalidOperationException();
+                }
+
+                _products[pair.Key] -= pair.Value;
+
+                if (_products[pair.Key] == 0)
+                {
+                    _products.Remove(pair.Key);
+                }
+            }
+        }
+
+        public bool Contains(Product good, int count)
+        {
+            if (count <= 0)
+                throw new ArgumentOutOfRangeException(count.ToString());
+
+            if (Products.ContainsKey(good))
+                return Products[good] >= count;
 
             return false;
         }
 
         protected void Clear() =>
-            _goods.Clear();
+            _products.Clear();
 
-        protected void AddGood(Good good, int count)
-        {
-            if (count <= 0)
-                throw new ArgumentOutOfRangeException(count.ToString());
-
-            if (_goods.ContainsKey(good))
-                _goods[good] += count;
-            else
-                _goods.Add(good, count);
-        }
+        protected virtual void OnAdd(Product good, int count) { }
     }
 }

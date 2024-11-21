@@ -4,8 +4,8 @@ namespace OnlineStore.Interfaces
 {
     public interface IWarehouseRemovable
     {
-        void RemoveGoods(IReadOnlyDictionary<Good, int> goods);
+        void RemoveAmount(IReadOnlyDictionary<Product, int> goods);
 
-        bool IsContains(Good good, int count);
+        bool Contains(Product good, int count);
     }
 }

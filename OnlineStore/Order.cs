@@ -1,7 +1,12 @@
-﻿namespace OnlineStore
+﻿using System;
+
+namespace OnlineStore
 {
     public struct Order
     {
-        public string Paylink => "просто какая - нибудь случайная строка.";
+        public Order(string paylink) =>
+            Paylink = paylink ?? throw new ArgumentNullException(nameof(paylink));
+
+        public string Paylink { get; }
     }
 }

@@ -9,7 +9,7 @@ namespace OnlineStore
         public Shop(Warehouse warehouse) =>
             _warehouse = warehouse ?? throw new ArgumentNullException(nameof(warehouse));
 
-        public Cart Cart() =>
+        public Cart CreateCart() =>
             new Cart(_warehouse);
     }
 }
