@@ -13,8 +13,8 @@ namespace OnlineStore
 
             Shop shop = new Shop(warehouse);
 
-            warehouse.Add(iPhone12, 10);
-            warehouse.Add(iPhone11, 1);
+            warehouse.Delive(iPhone12, 10);
+            warehouse.Delive(iPhone11, 1);
 
             //Вывод всех товаров на складе с их остатком
 
